@@ -7,13 +7,29 @@
     <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide-react@0.263.1"></script>
 </head>
 <body>
     <div id="root"></div>
     <script type="module">
         const { useState, useRef } = React;
-        const { AlertCircle } = lucideReact;
+
+        const AlertIcon = () => React.createElement(
+            "svg",
+            { 
+                xmlns: "http://www.w3.org/2000/svg", 
+                width: "24", 
+                height: "24", 
+                viewBox: "0 0 24 24", 
+                fill: "none", 
+                stroke: "currentColor", 
+                strokeWidth: "2", 
+                strokeLinecap: "round", 
+                strokeLinejoin: "round" 
+            },
+            React.createElement("circle", { cx: "12", cy: "12", r: "10" }),
+            React.createElement("line", { x1: "12", y1: "8", x2: "12", y2: "12" }),
+            React.createElement("line", { x1: "12", y1: "16", x2: "12.01", y2: "16" })
+        );
 
         const Alert = ({ children, variant = "default", className, ...props }) => {
             return React.createElement("div", {
@@ -140,7 +156,7 @@
                 error && React.createElement(
                     Alert,
                     { variant: "destructive", className: "mb-4" },
-                    React.createElement(AlertCircle, { className: "h-4 w-4" }),
+                    React.createElement(AlertIcon),
                     React.createElement(AlertTitle, null, "Error"),
                     React.createElement(AlertDescription, null, error)
                 ),
