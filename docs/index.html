@@ -6,41 +6,40 @@
     <title>Favicon Bookmarklet Generator</title>
     <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide-react@0.263.1"></script>
 </head>
 <body>
     <div id="root"></div>
-    <script type="text/babel">
+    <script type="module">
         const { useState, useRef } = React;
-        const { AlertCircle } = lucide;
+        const { AlertCircle } = lucideReact;
 
-        function Alert({ children, variant = "default", className, ...props }) {
-            return (
-                <div
-                    role="alert"
-                    className={`rounded-lg border p-4 ${
-                        variant === "destructive"
-                            ? "border-red-500 bg-red-50 text-red-700"
-                            : "border-gray-200 bg-white text-gray-950"
-                    } ${className}`}
-                    {...props}
-                >
-                    {children}
-                </div>
-            );
-        }
+        const Alert = ({ children, variant = "default", className, ...props }) => {
+            return React.createElement("div", {
+                role: "alert",
+                className: `rounded-lg border p-4 ${
+                    variant === "destructive"
+                        ? "border-red-500 bg-red-50 text-red-700"
+                        : "border-gray-200 bg-white text-gray-950"
+                } ${className}`,
+                ...props
+            }, children);
+        };
 
-        function AlertTitle({ className, ...props }) {
-            return <h5 className={`mb-1 font-medium leading-none tracking-tight ${className}`} {...props} />;
-        }
+        const AlertTitle = ({ className, ...props }) => 
+            React.createElement("h5", {
+                className: `mb-1 font-medium leading-none tracking-tight ${className}`,
+                ...props
+            });
 
-        function AlertDescription({ className, ...props }) {
-            return <div className={`text-sm [&_p]:leading-relaxed ${className}`} {...props} />;
-        }
+        const AlertDescription = ({ className, ...props }) => 
+            React.createElement("div", {
+                className: `text-sm [&_p]:leading-relaxed ${className}`,
+                ...props
+            });
 
-        function FaviconBookmarkletGenerator() {
+        const FaviconBookmarkletGenerator = () => {
             const [imageFile, setImageFile] = useState(null);
             const [bookmarkletUrl, setBookmarkletUrl] = useState('');
             const [error, setError] = useState('');
@@ -108,56 +107,60 @@
                 }
             };
 
-            return (
-                <div className="p-4 max-w-md mx-auto">
-                    <h1 className="text-2xl font-bold mb-4">Favicon Bookmarklet Generator</h1>
-                    <div 
-                        ref={pasteAreaRef}
-                        onPaste={handlePaste}
-                        className="mb-4 p-4 border-2 border-dashed rounded text-center cursor-pointer"
-                        onClick={() => pasteAreaRef.current.focus()}
-                        tabIndex="0"
-                    >
-                        Click here and paste your image, or drag and drop
-                    </div>
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                        className="mb-4 p-2 border rounded w-full"
-                    />
-                    {previewUrl && (
-                        <img src={previewUrl} alt="Preview" className="mb-4 max-w-full h-auto" />
-                    )}
-                    <button
-                        onClick={generateBookmarklet}
-                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full mb-4"
-                    >
-                        Generate Bookmarklet
-                    </button>
-                    {error && (
-                        <Alert variant="destructive" className="mb-4">
-                            <AlertCircle className="h-4 w-4" />
-                            <AlertTitle>Error</AlertTitle>
-                            <AlertDescription>{error}</AlertDescription>
-                        </Alert>
-                    )}
-                    {bookmarkletUrl && (
-                        <div className="mt-4">
-                            <p className="mb-2">Your bookmarklet is ready! Drag this link to your bookmarks bar:</p>
-                            <a
-                                href={bookmarkletUrl}
-                                className="bg-green-500 text-white px-4 py-2 rounded inline-block hover:bg-green-600"
-                            >
-                                ⠀
-                            </a>
-                        </div>
-                    )}
-                </div>
+            return React.createElement(
+                "div",
+                { className: "p-4 max-w-md mx-auto" },
+                React.createElement("h1", { className: "text-2xl font-bold mb-4" }, "Favicon Bookmarklet Generator"),
+                React.createElement(
+                    "div",
+                    {
+                        ref: pasteAreaRef,
+                        onPaste: handlePaste,
+                        className: "mb-4 p-4 border-2 border-dashed rounded text-center cursor-pointer",
+                        onClick: () => pasteAreaRef.current.focus(),
+                        tabIndex: "0"
+                    },
+                    "Click here and paste your image, or drag and drop"
+                ),
+                React.createElement("input", {
+                    type: "file",
+                    accept: "image/*",
+                    onChange: handleFileChange,
+                    className: "mb-4 p-2 border rounded w-full"
+                }),
+                previewUrl && React.createElement("img", { src: previewUrl, alt: "Preview", className: "mb-4 max-w-full h-auto" }),
+                React.createElement(
+                    "button",
+                    {
+                        onClick: generateBookmarklet,
+                        className: "bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full mb-4"
+                    },
+                    "Generate Bookmarklet"
+                ),
+                error && React.createElement(
+                    Alert,
+                    { variant: "destructive", className: "mb-4" },
+                    React.createElement(AlertCircle, { className: "h-4 w-4" }),
+                    React.createElement(AlertTitle, null, "Error"),
+                    React.createElement(AlertDescription, null, error)
+                ),
+                bookmarkletUrl && React.createElement(
+                    "div",
+                    { className: "mt-4" },
+                    React.createElement("p", { className: "mb-2" }, "Your bookmarklet is ready! Drag this link to your bookmarks bar:"),
+                    React.createElement(
+                        "a",
+                        {
+                            href: bookmarkletUrl,
+                            className: "bg-green-500 text-white px-4 py-2 rounded inline-block hover:bg-green-600"
+                        },
+                        "\u2800"
+                    )
+                )
             );
-        }
+        };
 
-        ReactDOM.render(<FaviconBookmarkletGenerator />, document.getElementById('root'));
+        ReactDOM.render(React.createElement(FaviconBookmarkletGenerator), document.getElementById('root'));
     </script>
 </body>
 </html>
